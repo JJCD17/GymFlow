@@ -39,9 +39,18 @@ composer install
 npm install
 cp .env.example .env
 php artisan key:generate
-php artisan migrate
+php artisan migrate --seed
 php artisan storage:link
 php artisan serve
 ```
 
-Panel de administración disponible en `/admin`.
+El seeder crea el super-admin y un gimnasio de ejemplo con clientes en distintos estados de membresía. Solo corre en entorno local.
+
+Las credenciales del super-admin se definen en `.env` (`SUPER_ADMIN_EMAIL` y `SUPER_ADMIN_PASSWORD`). El dueño del gimnasio de ejemplo es `dueno@demo.test` con esa misma contraseña.
+
+## Acceso
+
+Todos entran por `/admin/login`. Según su rol, el sistema los lleva a donde corresponde:
+
+- **Dueño del gimnasio** → `/admin`, para su operación diaria.
+- **Super-admin** → `/superadmin`, para dar de alta gimnasios.
