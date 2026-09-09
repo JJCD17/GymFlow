@@ -2,8 +2,7 @@
 
 namespace App\Providers\Filament;
 
-use App\Http\Middleware\RedirectToRolePanel;
-use Filament\Http\Middleware\Authenticate;
+use App\Http\Middleware\AuthenticatePanel;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -50,8 +49,7 @@ class SuperadminPanelProvider extends PanelProvider
                 DispatchServingFilamentEvent::class,
             ])
             ->authMiddleware([
-                Authenticate::class,
-                RedirectToRolePanel::class,
+                AuthenticatePanel::class,
             ]);
     }
 }
