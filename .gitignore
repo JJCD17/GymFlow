@@ -12,7 +12,9 @@
 /.phpunit.cache
 /.vscode
 /.zed
+/.bin
 /auth.json
+/laragon.env
 /node_modules
 /public/build
 /public/css/filament
