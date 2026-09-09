@@ -46,18 +46,19 @@ Al abrir a alguien: sus datos, el estado actual de su membresía, su historial d
 
 ## Checklist end-to-end
 
-- [ ] Recurso de clientes en el panel del dueño
-- [ ] Alta en una sola pantalla: cliente + membresía + pago en una transacción
-- [ ] Vencimiento calculado y visible antes de guardar
-- [ ] Listado con estado de membresía por color y días restantes
-- [ ] Filtros por estado y por inasistencia
-- [ ] Búsqueda por nombre y teléfono
-- [ ] Acción de registrar asistencia
-- [ ] Acción de renovar membresía
-- [ ] Acción de contactar por WhatsApp
+- [x] Recurso de clientes en el panel del dueño
+- [x] Alta en una sola pantalla: cliente + membresía + pago en una transacción
+- [x] Vencimiento calculado y visible antes de guardar
+- [x] Listado con estado de membresía por color y días restantes
+- [x] Filtros por estado y por inasistencia
+- [x] Búsqueda por nombre y teléfono
+- [x] Acción de registrar asistencia
+- [x] Acción de renovar membresía
+- [x] Acción de contactar por WhatsApp
+- [x] Verificación: alta crea membresía y pago; renovar continúa desde el vencimiento
+- [x] Verificación: un gimnasio no ve los clientes de otro
 - [ ] Ficha con historial de pagos y asistencias
-- [ ] Verificación manual: dar de alta un cliente y confirmar que quedan creados su membresía y su pago
-- [ ] Verificación manual: un gimnasio no ve los clientes de otro
+- [ ] Verificación en el navegador por el usuario
 
 ## Ajustes del gimnasio
 
@@ -72,7 +73,7 @@ Los mensajes **no mencionan GymFlow**: al cliente del gimnasio le llega un mensa
 
 ## Checklist — ajustes
 
-- [ ] Campos de configuración en el gimnasio (días de inasistencia y mensajes)
-- [ ] Pantalla de Ajustes en el panel del dueño
-- [ ] Mensajes con datos que el sistema rellena al enviar
-- [ ] Las alertas de inasistencia usan el número configurado, no uno fijo
+- [x] Campos de configuración en el gimnasio (días de inasistencia y mensajes)
+- [x] Pantalla de Ajustes en el panel del dueño
+- [x] Mensajes con datos que el sistema rellena al enviar
+- [x] Las alertas de inasistencia usan el número configurado, no uno fijo

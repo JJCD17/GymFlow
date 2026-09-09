@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Concerns\BelongsToGym;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -58,5 +59,37 @@ class Member extends Model
     public function scopeActive(Builder $query): void
     {
         $query->where('is_active', true);
+    }
+
+    public function scopeWithMembershipStatus(Builder $query, string $status): void
+    {
+        $query->whereHas('currentMembership', fn (Builder $q) => match ($status) {
+            'active' => $q->whereDate('ends_at', '>=', now()),
+            'expiring' => $q->whereDate('ends_at', '>=', now())
+                ->whereDate('ends_at', '<=', now()->addDays(7)),
+            'expired' => $q->whereDate('ends_at', '<', now()),
+        });
+    }
+
+    public function scopeInactiveFor(Builder $query, int $days): void
+    {
+        $query->where(fn (Builder $q) => $q
+            ->whereDoesntHave('checkIns')
+            ->orWhereHas('lastCheckIn', fn (Builder $c) => $c->whereDate('checked_in_at', '<', now()->subDays($days)))
+        );
+    }
+
+    protected function membershipStatus(): Attribute
+    {
+        return Attribute::get(function (): string {
+            $endsAt = $this->currentMembership?->ends_at;
+
+            return match (true) {
+                ! $endsAt => 'none',
+                $endsAt->isBefore(now()->startOfDay()) => 'expired',
+                $endsAt->isBefore(now()->addDays(7)) => 'expiring',
+                default => 'active',
+            };
+        });
     }
 }
