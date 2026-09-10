@@ -57,7 +57,7 @@ Al abrir a alguien: sus datos, el estado actual de su membresía, su historial d
 - [x] Acción de contactar por WhatsApp
 - [x] Verificación: alta crea membresía y pago; renovar continúa desde el vencimiento
 - [x] Verificación: un gimnasio no ve los clientes de otro
-- [ ] Ficha con historial de pagos y asistencias
+- [x] Ficha con historial de membresías, pagos y asistencias
 - [ ] Verificación en el navegador por el usuario
 
 ## Ajustes del gimnasio

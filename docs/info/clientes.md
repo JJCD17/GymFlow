@@ -45,6 +45,52 @@ Un cliente que nunca ha registrado asistencia también aparece en el filtro de i
 
 Solo aparece si el cliente tiene teléfono. El enlace usa `wa.me`, sin integración de API: abre WhatsApp con el mensaje escrito y el dueño decide si lo envía.
 
+## Días que el gimnasio no abre
+
+El dueño marca en Ajustes qué días de la semana cierra. Eso **no bloquea nada**: su único efecto es que esos días no cuentan como ausencia del cliente.
+
+**Por qué importa:** si un gimnasio cierra domingos y el umbral de abandono es 7 días, medir en días de calendario hace que la alerta salte antes de tiempo, porque incluye días en que el cliente no podía venir. `Gym::absenceThresholdDate()` retrocede día por día y solo descuenta los que el gimnasio abrió, así que "7 días sin venir" significa siete oportunidades perdidas de verdad.
+
+### Por qué no un horario completo
+
+Se consideró capturar el horario con turnos (por ejemplo 7-13 y 15-21) para impedir registrar asistencia con el gimnasio cerrado. Se descartó: quien registra la asistencia es el dueño o su encargado, en el mostrador y con el negocio abierto, así que el error que evitaría no ocurre en la práctica. El costo de capturar y mantener dos turnos por día no se paga.
+
+**Cuándo reconsiderarlo:** si se agregan clases con cupo y horario, o un tótem donde el propio cliente registra su entrada. Ahí sí hace falta saber si el gimnasio está abierto en ese momento.
+
+## Una asistencia por día
+
+Un cliente no puede registrar más de una asistencia el mismo día. Si ya tiene una, el botón aparece deshabilitado con la leyenda "Ya registró asistencia hoy".
+
+**Por qué:** sin esta regla, cada clic dejaba un registro nuevo, y el historial acababa con tres entradas del mismo minuto que no representan visitas reales. El dato existe para responder "¿vino hoy?" y "¿cuántos días lleva sin venir?", y para eso una por día basta.
+
+Sí hay quien va dos veces al día (entrena en la mañana, clase en la tarde), pero es poco común y contarlo dos veces no cambia ninguna de esas dos respuestas.
+
+La regla vive en `Member::hasCheckedInToday()`, así aplica en cualquier lugar donde se registre una asistencia, no solo en el botón. La acción la comprueba dos veces —al pintar el botón y al ejecutarse— porque el botón deshabilitado no protege de dos pestañas abiertas ni de un clic antes de que la página se actualice.
+
+**Pendiente:** la comparación usa la fecha del servidor. Cuando se aplique la zona horaria del gimnasio, esta regla debe usarla también, o un gimnasio en otro huso podría ver bloqueada una asistencia que para él es de otro día.
+
+## Ficha del cliente
+
+Al hacer clic en alguien del listado se abre su ficha, no el formulario de edición: casi siempre se entra a consultar, no a corregir datos.
+
+Arriba, lo que responde de un vistazo cómo está: estado de la membresía, plan actual, vencimiento con días restantes y última visita. Debajo, sus datos y desde cuándo es cliente. Las mismas acciones del listado (asistencia, renovar, contactar) están en el encabezado.
+
+Abajo, tres historiales de solo lectura: membresías, pagos y asistencias. No se editan a mano porque nacen de las acciones; corregirlos ahí desincronizaría el historial.
+
+### Estado de cada membresía
+
+Una membresía puede estar en tres estados, que dependen de su propio periodo:
+
+- **Vigente** — ya empezó y no ha terminado
+- **Programada** — se renovó por adelantado y arranca cuando termine la actual
+- **Terminada** — su fecha ya pasó
+
+Sin el estado "Programada", una renovación anticipada aparecería como vigente al mismo tiempo que la membresía en curso, lo que se leería como si el cliente tuviera dos activas.
+
+### Acciones compartidas
+
+Renovar, contactar y el cálculo de días restantes viven en `MemberResource`, no en la tabla, porque el listado y la ficha usan los mismos.
+
 ## Notas
 
 - El teléfono se limpia de guiones y espacios antes de armar el enlace, porque `wa.me` solo acepta dígitos.
