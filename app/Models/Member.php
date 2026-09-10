@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Carbon;
 
 class Member extends Model
 {
@@ -56,6 +57,11 @@ class Member extends Model
         return $this->hasOne(CheckIn::class)->latestOfMany('checked_in_at');
     }
 
+    public function hasCheckedInToday(): bool
+    {
+        return $this->checkIns()->whereDate('checked_in_at', now())->exists();
+    }
+
     public function scopeActive(Builder $query): void
     {
         $query->where('is_active', true);
@@ -71,11 +77,11 @@ class Member extends Model
         });
     }
 
-    public function scopeInactiveFor(Builder $query, int $days): void
+    public function scopeInactiveSince(Builder $query, Carbon $date): void
     {
         $query->where(fn (Builder $q) => $q
             ->whereDoesntHave('checkIns')
-            ->orWhereHas('lastCheckIn', fn (Builder $c) => $c->whereDate('checked_in_at', '<', now()->subDays($days)))
+            ->orWhereHas('lastCheckIn', fn (Builder $c) => $c->whereDate('checked_in_at', '<', $date))
         );
     }
 
