@@ -1,0 +1,27 @@
+<?php
+
+namespace App\Filament\Resources\Members\Pages;
+
+use App\Filament\Resources\Members\MemberResource;
+use Filament\Actions\EditAction;
+use Filament\Resources\Pages\ViewRecord;
+
+class ViewMember extends ViewRecord
+{
+    protected static string $resource = MemberResource::class;
+
+    public function getTitle(): string
+    {
+        return $this->record->full_name;
+    }
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            MemberResource::checkInAction(),
+            MemberResource::renewAction(),
+            MemberResource::contactAction(),
+            EditAction::make()->label('Editar'),
+        ];
+    }
+}
