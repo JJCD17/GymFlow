@@ -5,6 +5,7 @@ namespace App\Filament\Pages;
 use App\Support\MessageTemplates;
 use BackedEnum;
 use Filament\Actions\Action;
+use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
@@ -22,6 +23,8 @@ class Settings extends Page
 
     protected static ?string $navigationLabel = 'Ajustes';
 
+    protected static string|\UnitEnum|null $navigationGroup = 'Configuración';
+
     protected static ?int $navigationSort = 99;
 
     protected string $view = 'filament.pages.settings';
@@ -32,6 +35,7 @@ class Settings extends Page
     {
         $this->form->fill(Auth::user()->gym->only([
             'inactivity_days',
+            'closed_weekdays',
             'message_expiring',
             'message_expired',
             'message_inactive',
@@ -45,6 +49,7 @@ class Settings extends Page
             ->components([
                 Section::make('Avisos de inasistencia')
                     ->description('Cuándo considerar que un cliente dejó de venir.')
+                    ->columns(4)
                     ->schema([
                         TextInput::make('inactivity_days')
                             ->label('Días sin asistir')
@@ -53,6 +58,20 @@ class Settings extends Page
                             ->minValue(1)
                             ->maxValue(90)
                             ->required(),
+                        CheckboxList::make('closed_weekdays')
+                            ->label('Días que no abres')
+                            ->helperText('No se cuentan como ausencia del cliente.')
+                            ->options([
+                                1 => 'Lunes',
+                                2 => 'Martes',
+                                3 => 'Miércoles',
+                                4 => 'Jueves',
+                                5 => 'Viernes',
+                                6 => 'Sábado',
+                                0 => 'Domingo',
+                            ])
+                            ->columns(4)
+                            ->columnSpan(3),
                     ]),
 
                 Section::make('Mensajes para tus clientes')

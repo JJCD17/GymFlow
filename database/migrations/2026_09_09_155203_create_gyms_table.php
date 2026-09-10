@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('timezone')->default('America/Mexico_City');
             $table->boolean('is_active')->default(true);
             $table->unsignedSmallInteger('inactivity_days')->default(7);
+            $table->json('closed_weekdays')->nullable();
             $table->text('message_expiring')->nullable();
             $table->text('message_expired')->nullable();
             $table->text('message_inactive')->nullable();

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Carbon;
 
 class Gym extends Model
 {
@@ -21,6 +22,7 @@ class Gym extends Model
         'timezone',
         'is_active',
         'inactivity_days',
+        'closed_weekdays',
         'message_expiring',
         'message_expired',
         'message_inactive',
@@ -31,7 +33,34 @@ class Gym extends Model
         return [
             'is_active' => 'boolean',
             'inactivity_days' => 'integer',
+            'closed_weekdays' => 'array',
         ];
+    }
+
+    public function isClosedOn(Carbon $date): bool
+    {
+        return in_array($date->dayOfWeek, $this->closed_weekdays ?? [], false);
+    }
+
+    /**
+     * Fecha a partir de la cual un cliente cuenta como ausente, saltando los
+     * días que el gimnasio no abre: si cierra domingos, no deben sumarse al
+     * conteo de días sin asistir.
+     */
+    public function absenceThresholdDate(): Carbon
+    {
+        $date = now()->startOfDay();
+        $openDays = 0;
+
+        while ($openDays < $this->inactivity_days) {
+            $date->subDay();
+
+            if (! $this->isClosedOn($date)) {
+                $openDays++;
+            }
+        }
+
+        return $date;
     }
 
     protected function messageExpiring(): Attribute
