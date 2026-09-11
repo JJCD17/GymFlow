@@ -13,6 +13,7 @@ class GymSeeder extends Seeder
             gymData: ['name' => 'Gimnasio Demo', 'phone' => '6141234567'],
             ownerData: [
                 'name' => 'Dueño Demo',
+                'username' => 'demo',
                 'email' => 'dueno@demo.test',
                 'password' => config('gymflow.super_admin.password'),
             ],

@@ -1,4 +1,17 @@
 <style>
+    /* Filament le fija una altura al contenedor del logo; el contenido propio
+       (ícono + texto) mide más y se desbordaba sobre el formulario. */
+    .fi-logo {
+        height: auto !important;
+        display: flex;
+        align-items: center;
+    }
+
+    /* En el login la marca se muestra aparte, en grande, vía render hook. */
+    .fi-simple-layout .fi-logo {
+        display: none;
+    }
+
     .fi-sidebar-nav {
         border-right: 1px solid var(--color-gray-200);
         background-color: var(--color-gray-50);

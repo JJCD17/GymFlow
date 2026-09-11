@@ -25,5 +25,10 @@ class AppServiceProvider extends ServiceProvider
             PanelsRenderHook::HEAD_END,
             fn (): string => view('filament.sidebar-styles')->render(),
         );
+
+        FilamentView::registerRenderHook(
+            PanelsRenderHook::AUTH_LOGIN_FORM_BEFORE,
+            fn (): string => view('filament.brand-login')->render(),
+        );
     }
 }

@@ -7,7 +7,9 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Str;
 
 class GymForm
 {
@@ -21,7 +23,13 @@ class GymForm
                         TextInput::make('name')
                             ->label('Nombre del gimnasio')
                             ->required()
-                            ->maxLength(255),
+                            ->maxLength(255)
+                            ->live(onBlur: true)
+                            ->afterStateUpdated(function (Set $set, ?string $state, string $operation) {
+                                if ($operation === 'create') {
+                                    $set('owner_username', Str::slug((string) $state, ''));
+                                }
+                            }),
                         TextInput::make('phone')
                             ->label('Teléfono')
                             ->tel()
@@ -57,6 +65,13 @@ class GymForm
                             ->label('Nombre del dueño')
                             ->required()
                             ->maxLength(255),
+                        TextInput::make('owner_username')
+                            ->label('Usuario para entrar')
+                            ->helperText('Con esto entra al sistema, sin escribir su correo.')
+                            ->required()
+                            ->unique('users', 'username')
+                            ->alphaDash()
+                            ->maxLength(50),
                         TextInput::make('owner_email')
                             ->label('Correo electrónico')
                             ->email()

@@ -13,6 +13,15 @@ class Dashboard extends BaseDashboard
 
     public function getHeading(): string
     {
-        return Auth::user()->gym->name;
+        $user = Auth::user();
+
+        return "Bienvenido {$user->name}";
+    }
+
+    public function getSubheading(): ?string
+    {
+        $user = Auth::user();
+
+        return 'Panel de '.$user->gym->name;
     }
 }

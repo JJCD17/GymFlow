@@ -10,6 +10,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->foreignId('gym_id')->nullable()->after('id')->constrained()->cascadeOnDelete();
+            $table->string('username')->nullable()->unique()->after('name');
             $table->string('role')->default('owner')->after('password');
             $table->boolean('is_active')->default(true)->after('role');
         });
@@ -19,7 +20,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropForeign(['gym_id']);
-            $table->dropColumn(['gym_id', 'role', 'is_active']);
+            $table->dropColumn(['gym_id', 'username', 'role', 'is_active']);
         });
     }
 };

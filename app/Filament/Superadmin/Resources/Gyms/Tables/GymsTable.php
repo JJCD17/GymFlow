@@ -23,7 +23,9 @@ class GymsTable
                     ->sortable(),
                 TextColumn::make('owner.name')
                     ->label('Dueño')
-                    ->description(fn (Gym $record) => $record->owner?->email)
+                    ->description(fn (Gym $record) => $record->owner?->username
+                        ? "usuario: {$record->owner->username}"
+                        : $record->owner?->email)
                     ->searchable()
                     ->placeholder('Sin dueño'),
                 TextColumn::make('phone')

@@ -1,5 +1,23 @@
 # Paneles y control de acceso
 
+## La marca en dos tamaños
+
+`brandLogo` sirve la misma vista al login y a la barra lateral, pero cada lugar necesita un tamaño distinto: en el login la marca es lo principal, en la barra es solo referencia. La vista detecta si está en una pantalla de autenticación (`request()->routeIs('filament.*.auth.*')`) y ajusta el tamaño y la dirección — apilada y grande en el login, en fila y compacta en la barra.
+
+`.fi-logo` lleva `height: auto` en los estilos propios: Filament le fija una altura en línea, y como la marca incluye ícono **y** texto, el contenido medía más que esa altura y se desbordaba encima del formulario.
+
+## Entrar con usuario o con correo
+
+El campo de acceso acepta las dos cosas. `Login::getCredentialsFromFormData()` decide con qué buscar: si lo escrito tiene forma de correo busca por `email`, si no, por `username`.
+
+**Por qué:** no todos recuerdan con facilidad su correo, sobre todo si es uno que casi no usan. Un usuario corto derivado del nombre del gimnasio (`ladydabey`) es fácil de recordar y de dictar por teléfono.
+
+El super-admin lo asigna al dar de alta el gimnasio, y el formulario lo sugiere a partir del nombre. Es único en todo el sistema.
+
+**Por qué un usuario propio y no el nombre del gimnasio:** el nombre no distingue entre varias personas del mismo gimnasio. Si mañana el dueño da de alta a su encargado, cada uno necesita su propio identificador (`ladydabey`, `ladydabey-recepcion`).
+
+Que el usuario sea adivinable no debilita el acceso: la contraseña sigue siendo el secreto, igual que con un correo, que tampoco es información privada.
+
 ## Un solo login para todos
 
 Existe **una sola pantalla de login** (`/admin/login`). No importa el rol: todos entran por ahí y el sistema los manda solo a donde corresponde.

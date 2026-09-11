@@ -23,6 +23,7 @@ class CreateGym extends CreateRecord
             ],
             ownerData: [
                 'name' => $data['owner_name'],
+                'username' => $data['owner_username'],
                 'email' => $data['owner_email'],
                 'password' => $data['owner_password'],
             ],
