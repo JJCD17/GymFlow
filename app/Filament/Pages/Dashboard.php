@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Filament\Widgets\TopPlansWidget;
 use Filament\Pages\Dashboard as BaseDashboard;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,5 +24,17 @@ class Dashboard extends BaseDashboard
         $user = Auth::user();
 
         return 'Panel de '.$user->gym->name;
+    }
+
+    public function getWidgets(): array
+    {
+        return [
+            TopPlansWidget::class,
+        ];
+    }
+
+    public function getColumns(): int|array
+    {
+        return 1;
     }
 }
