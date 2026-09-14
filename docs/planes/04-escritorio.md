@@ -7,6 +7,14 @@
 
 El escritorio saludaba y nada más. La intención es que reúna accesos directos y tableros que respondan lo que el dueño se pregunta a diario, y que cada uno termine donde se toma la acción correspondiente.
 
+## Hoy en el gimnasio
+
+Va arriba de todo: es lo que el dueño mira al llegar. Cuatro KPIs —vinieron hoy, al corriente, faltan por venir, sin asistir—, la asistencia de los últimos días abiertos y quién ha venido hoy con su hora.
+
+Se actualiza solo cada 30 segundos, porque la pantalla se queda abierta en el mostrador mientras alguien más registra entradas.
+
+Los días que el gimnasio cierra no se cuentan como caída: el comparativo va contra el último día abierto y la gráfica los omite. Si hoy toca cerrado, lo dice.
+
 ## Planes más vendidos
 
 El primero, porque cierra un ciclo que ya existe: ahora el dueño puede editar sus planes, pero no tenía con qué decidir *qué* cambiar. Este tablero le dice qué se vende, qué no y cuánto deja cada plan, y lo lleva directo a la pantalla de Planes.
@@ -20,6 +28,12 @@ Las ventas se cuentan por membresía y el dinero por los pagos cobrados, no por 
 
 ## Checklist end-to-end
 
+- [x] Widget de asistencia del día con KPIs
+- [x] Comparativo contra el último día abierto, no contra ayer
+- [x] Gráfica de días abiertos recientes
+- [x] Lista de quién vino hoy, con su hora
+- [x] Refresco automático mientras la pantalla está abierta
+- [x] Aviso cuando el gimnasio no abre hoy
 - [x] Widget de planes más vendidos en el escritorio
 - [x] Selector de rango de fechas
 - [x] Ingresos y número de ventas por plan
@@ -35,5 +49,5 @@ Las ventas se cuentan por membresía y el dinero por los pagos cobrados, no por 
 Ideas para cuando se retomen, en el mismo espíritu de "responde algo y lleva a la acción":
 
 - Clientes por vencer esta semana, con acceso a contactarlos
-- Asistencias de la semana, para ver si el gimnasio se está usando
 - Ingresos del mes contra el anterior
+- Horas pico de asistencia, para saber cuándo reforzar personal

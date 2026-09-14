@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Filament\Widgets\TodayPulseWidget;
 use App\Filament\Widgets\TopPlansWidget;
 use Filament\Pages\Dashboard as BaseDashboard;
 use Illuminate\Support\Facades\Auth;
@@ -29,6 +30,8 @@ class Dashboard extends BaseDashboard
     public function getWidgets(): array
     {
         return [
+            // Primero cómo va el día, después qué ajustar en los planes.
+            TodayPulseWidget::class,
             TopPlansWidget::class,
         ];
     }
