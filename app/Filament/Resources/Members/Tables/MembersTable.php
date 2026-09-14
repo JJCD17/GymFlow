@@ -28,6 +28,7 @@ class MembersTable
                 TextColumn::make('membership_status')
                     ->label('Membresía')
                     ->badge()
+                    ->description(fn (Member $record) => $record->currentMembership?->plan?->name)
                     ->formatStateUsing(fn (string $state) => match ($state) {
                         'active' => 'Al corriente',
                         'expiring' => 'Por vencer',

@@ -1,0 +1,21 @@
+<?php
+
+namespace App\Filament\Resources\Plans\Pages;
+
+use App\Filament\Resources\Plans\PlanResource;
+use Filament\Resources\Pages\CreateRecord;
+
+class CreatePlan extends CreateRecord
+{
+    protected static string $resource = PlanResource::class;
+
+    protected function getCreatedNotificationTitle(): ?string
+    {
+        return 'Plan creado';
+    }
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
+}

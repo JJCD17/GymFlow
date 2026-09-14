@@ -22,12 +22,14 @@ use Filament\Actions\Action;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
+use Filament\Resources\Pages\ViewRecord;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 
 class MemberResource extends Resource
 {
@@ -72,7 +74,7 @@ class MemberResource extends Resource
             ->tooltip(fn (Member $record) => $record->hasCheckedInToday()
                 ? 'Ya registró asistencia hoy'
                 : null)
-            ->action(function (Member $record) {
+            ->action(function (Member $record, Component $livewire) {
                 if ($record->hasCheckedInToday()) {
                     Notification::make()
                         ->title("{$record->full_name} ya registró asistencia hoy")
@@ -88,6 +90,10 @@ class MemberResource extends Resource
                     ->title("Asistencia registrada para {$record->full_name}")
                     ->success()
                     ->send();
+
+                if ($livewire instanceof ViewRecord) {
+                    $livewire->js('$wire.$refresh()');
+                }
             });
     }
 
@@ -96,6 +102,11 @@ class MemberResource extends Resource
         return Action::make('renew')
             ->label('Renovar membresía')
             ->icon('heroicon-o-arrow-path')
+            ->modalHeading('Renovar membresía')
+            ->modalSubmitActionLabel('Renovar')
+            ->modalCancelActionLabel('Cancelar')
+            ->closeModalByClickingAway(false)
+            ->after(fn (Component $livewire) => static::refreshRelations($livewire))
             ->schema([
                 Select::make('plan_id')
                     ->label('Plan')
@@ -130,6 +141,21 @@ class MemberResource extends Resource
                     ->success()
                     ->send();
             });
+    }
+
+    /**
+     * Los historiales de la ficha son componentes aparte que no se enteran de
+     * un cambio hecho desde el encabezado. Refrescar el componente no basta
+     * cuando la acción viene de un modal, así que se recarga la página.
+     */
+    protected static function refreshRelations(Component $livewire): void
+    {
+        if ($livewire instanceof ViewRecord) {
+            $livewire->redirect(
+                static::getUrl('view', ['record' => $livewire->record]),
+                navigate: false,
+            );
+        }
     }
 
     public static function contactAction(): Action
