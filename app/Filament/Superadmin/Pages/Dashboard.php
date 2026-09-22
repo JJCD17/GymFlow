@@ -2,6 +2,7 @@
 
 namespace App\Filament\Superadmin\Pages;
 
+use App\Filament\Superadmin\Widgets\GymsOverviewWidget;
 use Filament\Pages\Dashboard as BaseDashboard;
 
 class Dashboard extends BaseDashboard
@@ -18,5 +19,17 @@ class Dashboard extends BaseDashboard
     public function getSubheading(): ?string
     {
         return 'Gimnasios registrados en GymFlow.';
+    }
+
+    public function getWidgets(): array
+    {
+        return [
+            GymsOverviewWidget::class,
+        ];
+    }
+
+    public function getColumns(): int|array
+    {
+        return 1;
     }
 }
