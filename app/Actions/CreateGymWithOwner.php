@@ -10,9 +10,9 @@ use Illuminate\Support\Str;
 
 class CreateGymWithOwner
 {
-    public function handle(array $gymData, array $ownerData): Gym
+    public function handle(array $gymData, array $ownerData, ?array $subscriptionData = null): Gym
     {
-        return DB::transaction(function () use ($gymData, $ownerData) {
+        return DB::transaction(function () use ($gymData, $ownerData, $subscriptionData) {
             $gym = Gym::create([
                 ...$gymData,
                 'code' => $this->uniqueCode($gymData['name']),
@@ -25,6 +25,12 @@ class CreateGymWithOwner
             ]);
 
             $gym->plans()->createMany(PlanTemplates::all());
+
+            // Sin suscripción el gimnasio nacería vencido y su dueño no podría
+            // entrar, así que la primera se registra en el alta.
+            if ($subscriptionData) {
+                $gym->subscriptions()->create($subscriptionData);
+            }
 
             return $gym;
         });

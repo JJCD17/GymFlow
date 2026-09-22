@@ -5,6 +5,7 @@ namespace App\Filament\Superadmin\Resources\Gyms;
 use App\Filament\Superadmin\Resources\Gyms\Pages\CreateGym;
 use App\Filament\Superadmin\Resources\Gyms\Pages\EditGym;
 use App\Filament\Superadmin\Resources\Gyms\Pages\ListGyms;
+use App\Filament\Superadmin\Resources\Gyms\RelationManagers\SubscriptionsRelationManager;
 use App\Filament\Superadmin\Resources\Gyms\Schemas\GymForm;
 use App\Filament\Superadmin\Resources\Gyms\Tables\GymsTable;
 use App\Models\Gym;
@@ -41,7 +42,7 @@ class GymResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            SubscriptionsRelationManager::class,
         ];
     }
 

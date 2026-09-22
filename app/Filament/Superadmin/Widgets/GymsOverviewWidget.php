@@ -17,12 +17,14 @@ class GymsOverviewWidget extends Widget
     public function getViewData(): array
     {
         $total = Gym::count();
-        $activos = Gym::where('is_active', true)->count();
+        $activos = Gym::active()->count();
 
         return [
             'total' => $total,
             'activos' => $activos,
             'inactivos' => $total - $activos,
+            'suspendidos' => Gym::suspended()->count(),
+            'porVencer' => Gym::expiringWithin(15)->count(),
             'gimnasiosUrl' => GymResource::getUrl('index'),
         ];
     }

@@ -19,7 +19,6 @@ class CreateGym extends CreateRecord
                 'phone' => $data['phone'] ?? null,
                 'logo_path' => $data['logo_path'] ?? null,
                 'timezone' => $data['timezone'],
-                'is_active' => $data['is_active'] ?? true,
             ],
             ownerData: [
                 'name' => $data['owner_name'],
@@ -27,11 +26,15 @@ class CreateGym extends CreateRecord
                 'email' => $data['owner_email'],
                 'password' => $data['owner_password'],
             ],
+            subscriptionData: [
+                'subscription_plan_id' => $data['subscription_plan_id'],
+                'starts_at' => $data['subscription_starts_at'],
+            ],
         );
     }
 
     protected function getCreatedNotificationTitle(): ?string
     {
-        return 'Gimnasio creado con su dueño y planes iniciales';
+        return 'Gimnasio creado con su dueño, suscripción y planes iniciales';
     }
 }

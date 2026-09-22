@@ -67,6 +67,20 @@
                 color: var(--danger-400);
             }
 
+            .gf-gyms-kpi-value--aviso {
+                color: var(--warning-600);
+            }
+
+            .dark .gf-gyms-kpi-value--aviso {
+                color: var(--warning-400);
+            }
+
+            .gf-gyms-kpi-hint {
+                margin-top: 0.25rem;
+                font-size: 0.75rem;
+                color: var(--color-gray-500);
+            }
+
             .gf-gyms-footer {
                 margin-top: 1.25rem;
                 padding-top: 0.75rem;
@@ -100,11 +114,26 @@
             <div class="gf-gyms-kpi">
                 <div class="gf-gyms-kpi-label">Activos</div>
                 <div class="gf-gyms-kpi-value gf-gyms-kpi-value--activos">{{ $activos }}</div>
+                <div class="gf-gyms-kpi-hint">con suscripción vigente</div>
             </div>
 
             <div class="gf-gyms-kpi">
                 <div class="gf-gyms-kpi-label">Inactivos</div>
                 <div class="gf-gyms-kpi-value gf-gyms-kpi-value--inactivos">{{ $inactivos }}</div>
+                <div class="gf-gyms-kpi-hint">
+                    @if ($suspendidos > 0)
+                        {{ $suspendidos }} {{ $suspendidos === 1 ? 'suspendido' : 'suspendidos' }},
+                        {{ $inactivos - $suspendidos }} por vencimiento
+                    @else
+                        por vencimiento
+                    @endif
+                </div>
+            </div>
+
+            <div class="gf-gyms-kpi">
+                <div class="gf-gyms-kpi-label">Vencen pronto</div>
+                <div class="gf-gyms-kpi-value @if ($porVencer > 0) gf-gyms-kpi-value--aviso @endif">{{ $porVencer }}</div>
+                <div class="gf-gyms-kpi-hint">en los próximos 15 días</div>
             </div>
         </div>
 

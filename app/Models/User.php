@@ -60,6 +60,13 @@ class User extends Authenticatable implements FilamentUser
             return true;
         }
 
-        return $panel->getId() !== 'superadmin' && (bool) $this->gym?->is_active;
+        if ($panel->getId() === 'superadmin') {
+            return false;
+        }
+
+        // El gimnasio se relee en cada request en vez de usar la relación ya
+        // cargada: con una sesión abierta, el valor viejo dejaría al dueño
+        // adentro después de que venciera su suscripción o lo suspendieran.
+        return (bool) $this->gym()->first()?->is_active;
     }
 }
