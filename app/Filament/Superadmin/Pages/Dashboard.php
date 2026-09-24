@@ -2,6 +2,7 @@
 
 namespace App\Filament\Superadmin\Pages;
 
+use App\Filament\Superadmin\Widgets\GymActivityWidget;
 use App\Filament\Superadmin\Widgets\GymsOverviewWidget;
 use Filament\Pages\Dashboard as BaseDashboard;
 
@@ -25,6 +26,7 @@ class Dashboard extends BaseDashboard
     {
         return [
             GymsOverviewWidget::class,
+            GymActivityWidget::class,
         ];
     }
 

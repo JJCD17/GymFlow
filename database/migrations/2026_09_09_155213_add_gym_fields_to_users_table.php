@@ -13,6 +13,8 @@ return new class extends Migration
             $table->string('username')->nullable()->unique()->after('name');
             $table->string('role')->default('owner')->after('password');
             $table->boolean('is_active')->default(true)->after('role');
+            $table->timestamp('last_login_at')->nullable()->after('is_active');
+            $table->timestamp('last_seen_at')->nullable()->after('last_login_at');
         });
     }
 
@@ -20,7 +22,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropForeign(['gym_id']);
-            $table->dropColumn(['gym_id', 'username', 'role', 'is_active']);
+            $table->dropColumn(['gym_id', 'username', 'role', 'is_active', 'last_login_at', 'last_seen_at']);
         });
     }
 };
