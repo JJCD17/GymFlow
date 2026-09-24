@@ -22,11 +22,13 @@ Cada renovación es un registro nuevo, nunca una edición de la anterior, así q
 | Estado | Cuándo | Color |
 |---|---|---|
 | Al corriente | Vence en más de 7 días | Verde |
-| Por vencer | Vence dentro de 7 días | Amarillo |
+| Por vencer | Vence dentro de los días configurados (7 por defecto) | Amarillo |
 | Vencida | Ya pasó la fecha | Rojo |
 | Sin membresía | Nunca tuvo una | Gris |
 
-**Pendiente:** el umbral de "por vencer" está fijo en 7 días. Sería coherente con el resto del sistema que el dueño pudiera configurarlo, como ya configura los días de inasistencia.
+El umbral de "por vencer" lo decide el dueño en Ajustes (`gyms.expiring_days`, de 1 a 30), igual que los días de inasistencia. Cuenta por fecha y con el último día incluido: con 7 días, una membresía que vence dentro de exactamente 7 días ya está por vencer, y el día mismo que vence también.
+
+La regla vive en dos lugares que tienen que coincidir: el accessor `membership_status` (color y etiqueta, lee `$member->gym`) y `scopeWithMembershipStatus` (filtro del listado). El scope recibe los días como parámetro, porque un scope no sabe de qué gimnasio es la consulta. El listado precarga `gym` para que la etiqueta no haga una consulta por fila.
 
 ## Filtros del listado
 
@@ -44,6 +46,12 @@ Un cliente que nunca ha registrado asistencia también aparece en el filtro de i
 **Contactar** arma un enlace de WhatsApp con el mensaje que corresponde al estado del cliente: vencida, por vencer, o el de inasistencia si está al corriente pero no ha venido. Los datos del mensaje se rellenan solos.
 
 Solo aparece si el cliente tiene teléfono. El enlace usa `wa.me`, sin integración de API: abre WhatsApp con el mensaje escrito y el dueño decide si lo envía.
+
+### Vista previa en Ajustes
+
+Debajo de cada mensaje, Ajustes muestra una burbuja de WhatsApp con el texto ya llenado: el nombre real del gimnasio, un cliente de ejemplo (Ana López) y una fecha que sale de los días configurados. Se actualiza mientras el dueño escribe.
+
+**Por qué:** el dueño no sabe qué es `{cliente}`. Viendo solo la plantilla, cree que el cliente va a recibir las llaves tal cual. La vista previa usa `MessageTemplates::render()`, la misma función que llena el mensaje al enviarlo, así que lo que se ve es exactamente lo que va a llegar.
 
 ## Días que el gimnasio no abre
 

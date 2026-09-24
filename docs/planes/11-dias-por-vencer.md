@@ -1,6 +1,6 @@
 # Plan 11 — Días de "por vencer" configurables
 
-**Estado:** Pendiente
+**Estado:** En progreso
 **Objetivo:** Que el dueño decida con cuántos días de anticipación una membresía cuenta como "por vencer", igual que ya decide los días de inasistencia.
 
 Cambio chico. Se puede adelantar antes de la fase 07, porque la recepción muestra "por vencer".
@@ -25,9 +25,9 @@ Las dos reglas escriben el 7 por separado: una compara en SQL y la otra en PHP. 
 
 ## Checklist end-to-end
 
-- [ ] Columna `gyms.expiring_days`
-- [ ] Campo en Ajustes con validación
-- [ ] Scope y accessor usan el valor del gimnasio
-- [ ] Pruebas: gimnasio con 3 días vs. uno con 15; el último día cuenta igual en el filtro y en la etiqueta
-- [ ] `docs/info/clientes.md`: quitar el "Pendiente" y documentar el ajuste
+- [x] Columna `gyms.expiring_days`
+- [x] Campo en Ajustes con validación
+- [x] Scope y accessor usan el valor del gimnasio
+- [x] Pruebas: gimnasio con 3 días vs. uno con 15; el último día cuenta igual en el filtro y en la etiqueta
+- [x] `docs/info/clientes.md`: quitar el "Pendiente" y documentar el ajuste
 - [ ] Verificación en el navegador por el usuario

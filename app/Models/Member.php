@@ -67,12 +67,18 @@ class Member extends Model
         $query->where('is_active', true);
     }
 
-    public function scopeWithMembershipStatus(Builder $query, string $status): void
+    /**
+     * `$expiringDays` es el ajuste del gimnasio. Se recibe en vez de leerse
+     * aquí porque un scope no sabe de qué gimnasio es la consulta.
+     */
+    public function scopeWithMembershipStatus(Builder $query, string $status, ?int $expiringDays = null): void
     {
+        $expiringDays ??= Gym::DEFAULT_EXPIRING_DAYS;
+
         $query->whereHas('currentMembership', fn (Builder $q) => match ($status) {
             'active' => $q->whereDate('ends_at', '>=', now()),
             'expiring' => $q->whereDate('ends_at', '>=', now())
-                ->whereDate('ends_at', '<=', now()->addDays(7)),
+                ->whereDate('ends_at', '<=', now()->addDays($expiringDays)),
             'expired' => $q->whereDate('ends_at', '<', now()),
         });
     }
@@ -93,7 +99,7 @@ class Member extends Model
             return match (true) {
                 ! $endsAt => 'none',
                 $endsAt->isBefore(now()->startOfDay()) => 'expired',
-                $endsAt->isBefore(now()->addDays(7)) => 'expiring',
+                ! $endsAt->isAfter(today()->addDays($this->gym->expiring_days)) => 'expiring',
                 default => 'active',
             };
         });

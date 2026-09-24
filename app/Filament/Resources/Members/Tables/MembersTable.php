@@ -18,7 +18,7 @@ class MembersTable
     public static function configure(Table $table): Table
     {
         return $table
-            ->modifyQueryUsing(fn ($query) => $query->with(['currentMembership.plan', 'lastCheckIn']))
+            ->modifyQueryUsing(fn ($query) => $query->with(['gym', 'currentMembership.plan', 'lastCheckIn']))
             ->columns([
                 TextColumn::make('full_name')
                     ->label('Cliente')
@@ -60,7 +60,7 @@ class MembersTable
                         'expired' => 'Vencidas',
                     ])
                     ->query(fn ($query, array $data) => filled($data['value'] ?? null)
-                        ? $query->withMembershipStatus($data['value'])
+                        ? $query->withMembershipStatus($data['value'], Auth::user()->gym->expiring_days)
                         : $query),
                 Filter::make('sin_asistir')
                     ->label('Sin asistir')

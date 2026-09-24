@@ -15,6 +15,8 @@ class Gym extends Model
 {
     use HasFactory;
 
+    public const DEFAULT_EXPIRING_DAYS = 7;
+
     protected $fillable = [
         'name',
         'code',
@@ -23,6 +25,7 @@ class Gym extends Model
         'timezone',
         'suspended_at',
         'inactivity_days',
+        'expiring_days',
         'closed_weekdays',
         'message_expiring',
         'message_expired',
@@ -34,6 +37,7 @@ class Gym extends Model
         return [
             'suspended_at' => 'datetime',
             'inactivity_days' => 'integer',
+            'expiring_days' => 'integer',
             'closed_weekdays' => 'array',
         ];
     }

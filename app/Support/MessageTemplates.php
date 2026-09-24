@@ -3,6 +3,7 @@
 namespace App\Support;
 
 use App\Models\Member;
+use Carbon\CarbonInterface;
 
 class MessageTemplates
 {
@@ -29,11 +30,23 @@ class MessageTemplates
 
     public static function fill(string $template, Member $member): string
     {
-        $endsAt = $member->currentMembership?->ends_at;
+        return self::render(
+            $template,
+            $member->full_name,
+            $member->gym->name,
+            $member->currentMembership?->ends_at,
+        );
+    }
 
+    /**
+     * Mismo reemplazo que al enviar, con datos de ejemplo: así la vista previa
+     * de Ajustes muestra justo lo que le llegaría al cliente.
+     */
+    public static function render(string $template, string $client, string $gym, ?CarbonInterface $endsAt): string
+    {
         return strtr($template, [
-            '{cliente}' => $member->full_name,
-            '{gimnasio}' => $member->gym->name,
+            '{cliente}' => $client,
+            '{gimnasio}' => $gym,
             '{vencimiento}' => $endsAt?->format('d/m/Y') ?? '',
         ]);
     }
